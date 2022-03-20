@@ -7,6 +7,7 @@ import os
 
 DATA_NUM = 2
 
+
 def extractSingleFile(file_type, file_num):
     dataframe = pd.DataFrame(columns=FEATURE_COLUMNS[0:9])
     file = os.path.join(DATA_BASE_PATH, file_type, file_type + '-' + str(file_num) + '.csv')
@@ -27,19 +28,18 @@ def extractAndProcessAllDataFiles():
     for activity in ACTIVITY_LIST:
         activity_files = os.listdir(os.path.join(DATA_BASE_PATH, activity))
         for file in activity_files:
-            try:
-                df = pd.read_csv(os.path.join(DATA_BASE_PATH, activity, file))
-                dataframe = feature_engineer(
-                    action=df.to_numpy(),
-                    target=activity,
-                    df=dataframe
-                )
-            except:
-                print('some error')
+                try:
+                    df = pd.read_csv(os.path.join(DATA_BASE_PATH, activity, file))
+                    dataframe = feature_engineer(
+                        action=df.to_numpy(),
+                        target=activity,
+                        df=dataframe
+                    )
+                except:
+                    print('some error')
     # data = [x, y, z]
     # generate_plots(x, y, z, 3)
     print(dataframe['target'].value_counts())
     dataframe['target'].value_counts().plot(kind='barh')
     dataframe.to_csv('data/final_data.csv', index=False)
-
 

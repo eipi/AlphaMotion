@@ -1,7 +1,6 @@
-from data_access import read_csv_file_to_numpy
 from utilities import feature_engineer
-from constants import FEATURE_COLUMNS, ACTIVITY_LIST, DATA_BASE_PATH
-import utilities
+from constants import FEATURE_COLUMNS, OLEKS_ACTIVITY_LIST, DATA_BASE_PATH
+
 import pandas as pd
 import os
 
@@ -25,7 +24,7 @@ def extractSingleFile(file_type, file_num):
 
 def extractAndProcessAllDataFiles():
     dataframe = pd.DataFrame(columns=FEATURE_COLUMNS)
-    for activity in ACTIVITY_LIST:
+    for activity in OLEKS_ACTIVITY_LIST:
         activity_files = os.listdir(os.path.join(DATA_BASE_PATH, activity))
         for file in activity_files:
                 try:

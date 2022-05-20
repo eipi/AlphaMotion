@@ -59,19 +59,13 @@ def oleksander_parser(file):
     return samples
 
 
-def hg93_parser(file):
-    samples = []
-    #        for line in csv.reader(f):
-    #            print(line)
-    dict_reader = csv.DictReader(file)
-    for line in dict_reader:
-        line_x = float(line['accelerometer_X'])
-        line_y = float(line['accelerometer_Y'])
-        line_z = float(line['accelerometer_Z'])
-        vector = [line_x, line_y, line_z]
-        samples.append(vector)
-        # print('X=' + str(line_x) + ', Y=' + str(line_y) + ', Z=' + str(line_z))
-    return samples
-
-
-parser_mapping = {'oleksander': oleksander_parser(), 'hg93': hg93_parser()}
+def erenaktas_target_parser(path):
+    a = {}
+    with open(path) as f:
+        for line in f:
+            (experiment, user, classfication, sample_start, sample_end) = line.split()
+            if experiment not in a.keys():
+                a[experiment] = {}
+            a[experiment][sample_start] = classfication
+    print(a)
+    return a

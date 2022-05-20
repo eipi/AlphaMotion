@@ -5,10 +5,6 @@ import os
 import xml.etree.ElementTree as et
 import csv
 
-
-# example of data that AndroSensor return
-# os.listdir()
-
 def read_xml_file(filename, path=''):
     file = os.path.realpath(
         os.path.join(os.path.join(os.getcwd(), os.pardir),
@@ -67,5 +63,5 @@ def erenaktas_target_parser(path):
             if experiment not in a.keys():
                 a[experiment] = {}
             a[experiment][sample_start] = classfication
-    print(a)
+    #print(a)
     return a

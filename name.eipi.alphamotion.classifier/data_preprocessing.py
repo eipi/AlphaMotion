@@ -1,9 +1,7 @@
-import traceback
-
 import numpy as np
 
 from utilities import feature_engineer
-from constants import FEATURE_COLUMNS, OLEKS_ACTIVITY_LIST, DATA_BASE_PATH
+from constants import FEATURE_COLUMNS, DATA_BASE_PATH
 from data_access import erenaktas_target_parser
 
 import pandas as pd
@@ -59,7 +57,6 @@ def extractAndProcessRawDataFiles(sub_path):
                     target=activity,
                     df=vector_df
                 )
-    #print(dataframe['target'].value_counts())
     dataframe['target'].value_counts().plot(kind='barh')
     dataframe.to_csv('data/temp/final_data.csv', index=False)
 

@@ -1,11 +1,7 @@
 import pandas as pd
 import os
+from constants import DATA_BASE_PATH
 
-DATA_BASE_PATH = 'data/'
-DATA_IDLE = 'idle/'
-DATA_RUNNING = 'running/'
-DATA_STAIRS = 'stairs/'
-DATA_WALKING = 'walking/'
 
 # example of data that AndroSensor return
 pd.read_csv(os.path.join(DATA_BASE_PATH, 'running/running-1.csv')).head()

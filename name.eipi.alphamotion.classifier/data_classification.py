@@ -1,13 +1,11 @@
 import pandas as pd
 import seaborn as sns
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 
 from data_visualization import plotTsne
 from sklearn.model_selection import train_test_split, GridSearchCV
-from data_visualization import perplexity
 import matplotlib.pyplot as plt
 
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier

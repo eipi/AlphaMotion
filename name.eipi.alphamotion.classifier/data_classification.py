@@ -1,5 +1,6 @@
 import pandas as pd
 import seaborn as sns
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
@@ -27,17 +28,16 @@ param_grid = [
 
 
 
-
 rf = RandomForestClassifier()
 dec_tre = DecisionTreeClassifier()
-#lr = LogisticRegression()
+lr = LogisticRegression()
 svc = SVC()
 gb = GradientBoostingClassifier()
 ml = MLPClassifier(hidden_layer_sizes=(7,))
 classifiers = {
     'RandomForestClassifier': rf,  # perfect
     'DecisionTreeClassifier': dec_tre,
-    #'LogisticRegression': lr,
+    'LogisticRegression': lr,
     'SVC': svc,
     'GradientBoostingClassifier': gb,  # excellent
     'MLPClassifier': ml
@@ -45,7 +45,7 @@ classifiers = {
 classifier_params = {
     'RandomForestClassifier': ['max_depth'],
     'DecisionTreeClassifier': ['max_depth'],
-    #'LogisticRegression': lr,
+    'LogisticRegression': lr,
     'SVC': ['coef0', 'decision_function_shape'],
     'GradientBoostingClassifier': ['max_depth'],  # excellent
     'MLPClassifier': ['hidden_layer_sizes', 'alpha']
@@ -76,7 +76,7 @@ def train_model(model, x_train, y_train):
 def generate_confusion_matrix(model, x_test, y_test):
     y_pred = model.predict(x_test)
     #print(classification_report(y_test, y_pred))
-    cm = confusion_matrix(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred, normalize='true')
     return cm
 
 
@@ -119,12 +119,14 @@ def learn_and_classify(df, training_proportion):
     # x_train = scaler.transform(x_train)
     # x_test = scaler.transform(x_test)
     for classifier in classifiers.keys():
+        print("Training " + classifier + " classifier")
         classifiers[classifier].fit(x_train, y_train)
+        print("Evaluating " + classifier + " classifier")
         cm = generate_confusion_matrix(classifiers[classifier], x_test, y_test)
         # accuracy matrix
         insert_or_add(classifier, cm)
-        visualize_classifier_confusion_matrix(classifiers[classifier], labels, classifier, x_test, y_test)
-    plotTsne(x_train, y_train, 5)
+        #visualize_classifier_confusion_matrix(classifiers[classifier], labels, classifier, x_test, y_test)
+    #plotTsne(x_train, y_train, 5)
 
 
 def validate_classifier_params(df):

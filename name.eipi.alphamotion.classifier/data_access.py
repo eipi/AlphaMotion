@@ -4,6 +4,7 @@ import constants
 import os
 import xml.etree.ElementTree as et
 import csv
+from constants import ACTIVITY_LABELS
 
 def read_xml_file(filename, path=''):
     file = os.path.realpath(
@@ -61,7 +62,8 @@ def erenaktas_target_parser(path):
         for line in f:
             (experiment, user, classfication, sample_start, sample_end) = line.split()
             if experiment not in a.keys():
-                a[experiment] = {}
-            a[experiment][sample_start] = classfication
-    #print(a)
+                a[experiment] = []
+            sample = [int(sample_start), int(sample_end), ACTIVITY_LABELS.get(int(classfication))]
+            target_list = a.get(experiment)
+            target_list.append(sample)
     return a

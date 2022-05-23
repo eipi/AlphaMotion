@@ -54,18 +54,15 @@ classifier_params = {
 confusion_matrices = {}
 
 
-def insert_or_multiply(name, matrix):
+def insert_or_add(name, cm_natural, cm_normalized):
+    confusion_matrices_name = {}
     if (name in confusion_matrices.keys()):
-        confusion_matrices[name] = confusion_matrices[name] * matrix
+        confusion_matrices_name['natural'] = confusion_matrices[name]['natural'] + cm_natural
+        confusion_matrices_name['normalized'] = confusion_matrices[name]['normalized'] + cm_normalized
     else:
-        confusion_matrices[name] = matrix
-
-
-def insert_or_add(name, matrix):
-    if (name in confusion_matrices.keys()):
-        confusion_matrices[name] = confusion_matrices[name] + matrix
-    else:
-        confusion_matrices[name] = matrix
+        confusion_matrices_name['natural'] = cm_natural
+        confusion_matrices_name['normalized'] = cm_normalized
+    confusion_matrices[name] = confusion_matrices_name
 
 
 def train_model(model, x_train, y_train):
@@ -73,11 +70,12 @@ def train_model(model, x_train, y_train):
     return model
 
 
-def generate_confusion_matrix(model, x_test, y_test):
+def generate_confusion_matrices(model, x_test, y_test):
     y_pred = model.predict(x_test)
     #print(classification_report(y_test, y_pred))
-    cm = confusion_matrix(y_test, y_pred, normalize='true')
-    return cm
+    cm_natural = confusion_matrix(y_test, y_pred, normalize=None)
+    cm_normalized = confusion_matrix(y_test, y_pred, normalize='true')
+    return cm_natural, cm_normalized
 
 
 def visualize_classifier_confusion_matrix(cm, labels, name, x_test, y_test):
@@ -122,9 +120,9 @@ def learn_and_classify(df, training_proportion):
         print("Training " + classifier + " classifier")
         classifiers[classifier].fit(x_train, y_train)
         print("Evaluating " + classifier + " classifier")
-        cm = generate_confusion_matrix(classifiers[classifier], x_test, y_test)
+        cm_natural, cm_normalized = generate_confusion_matrices(classifiers[classifier], x_test, y_test)
         # accuracy matrix
-        insert_or_add(classifier, cm)
+        insert_or_add(classifier, cm_natural, cm_normalized)
         #visualize_classifier_confusion_matrix(classifiers[classifier], labels, classifier, x_test, y_test)
     #plotTsne(x_train, y_train, 5)
 

@@ -20,7 +20,7 @@ def extractSingleFile(file_type, file_num):
         print('some error')
     return dataframe.drop('target', 1)
 
-def extractAndProcessRawDataFiles(sub_path, slice_size):
+def extractAndProcessRawDataFiles(sub_path, slice_size, results_folder):
     dataframe = pd.DataFrame(columns=FEATURE_COLUMNS)
     classification_index = erenaktas_target_parser("data/erenaktas/labels.txt")
     activity_files = os.listdir(os.path.join(DATA_BASE_PATH, sub_path))
@@ -67,5 +67,5 @@ def extractAndProcessRawDataFiles(sub_path, slice_size):
                     )
 
     dataframe['target'].value_counts().plot(kind='barh')
-    dataframe.to_csv('../build/final_data.csv', index=False)
+    dataframe.to_csv(results_folder + '/final_data.csv', index=False)
 

@@ -11,7 +11,8 @@ def extract(list, n):
     return nth_items
 
 
-data_folder = os.path.realpath(os.path.join(os.path.join(os.path.join(os.curdir, "data"), "erenaktas"), "acc"))
+data_folder = os.path.realpath(os.path.join(os.path.join(os.path.join(os.curdir,
+                                                                      "../name.eipi.alphamotion.classifier/data"), "erenaktas"), "acc"))
 num_lines_per_file = {}
 experiments_list = []
 

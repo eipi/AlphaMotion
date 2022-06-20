@@ -1,15 +1,5 @@
 from collections import namedtuple
 
-alpha = [0, 4]
-beta = [5, 8]
-gamma = [9, 12]
-delta = [13, 16]
-epsilon = [17, 20]
-ita = [21, 24]
-chi = [25, 28]
-omega = [29, 30]
-sample_test_data = [alpha, beta, gamma, delta, epsilon, ita, chi, omega]
-labels_test_data = [[1, 6, 'A'], [7, 11, 'B'], [12, 23, 'C'], [24, 30, 'D']]
 
 SampleBase = namedtuple("SampleBase", ["start", "end"])
 class Sample(SampleBase):

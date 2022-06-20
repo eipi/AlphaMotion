@@ -1,5 +1,3 @@
-SAMPLE_FREQUENCY = 0.5
-
 DATA_BASE_PATH = 'data'
 
 FEATURE_COLUMNS = [
@@ -12,16 +10,16 @@ FEATURE_COLUMNS = [
 ]
 
 ACTIVITY_LABELS = {
-1: 'Walking',
-2: 'Walk Upstairs',
-3: 'Walk Downstairs',
-4: 'Sitting',
-5: 'Standing',
-6: 'Laying',
-7: 'Stand to sit',
-8: 'Sit to stand',
-9: 'Sit to lie',
-10: 'Lie to sit',
-11: 'Stand to lie',
-12: 'Lie to stand'
+    1: 'Walking',
+    2: 'Walk Upstairs',
+    3: 'Walk Downstairs',
+    4: 'Sitting',
+    5: 'Standing',
+    6: 'Laying',
+    7: 'Stand to sit',
+    8: 'Sit to stand',
+    9: 'Sit to lie',
+    10: 'Lie to sit',
+    11: 'Stand to lie',
+    12: 'Lie to stand'
 }

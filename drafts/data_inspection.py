@@ -1,12 +1,11 @@
 from scipy.integrate import cumtrapz
-from constants import SAMPLE_FREQUENCY
 import matplotlib.pyplot as plt
 
 plt.style.use('ggplot')
 
-
 plot_types = ['plot_3d_trajectory', 'plot_frequency_spectrum']
 
+SAMPLE_FREQUENCY = 50
 
 def generate_plots(x, y, z, plots):
     request = bin(plots)[2:].zfill(len(plot_types))[::-1]

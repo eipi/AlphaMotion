@@ -1,11 +1,18 @@
 DATA_BASE_PATH = 'data'
 
+RAW_COLUMNS = ['ax', 'ay', 'az', 'gx', 'gy', 'gz', 'target']
+
 FEATURE_COLUMNS = [
-    'x_mean', 'y_mean', 'z_mean',
-    'x_std', 'y_std', 'z_std',
-    'num_x_peaks', 'num_y_peaks', 'num_z_peaks',
-    'x_peak_prominence', 'y_peak_prominence', 'z_peak_prominence',
-    'x_peak_width', 'y_peak_width', 'z_peak_width',
+    'acc_x_mean', 'acc_y_mean', 'acc_z_mean',
+    'acc_x_std', 'acc_y_std', 'acc_z_std',
+    'acc_num_x_peaks', 'acc_num_y_peaks', 'acc_num_z_peaks',
+    'acc_x_peak_prominence', 'acc_y_peak_prominence', 'acc_z_peak_prominence',
+    'acc_x_peak_width', 'acc_y_peak_width', 'acc_z_peak_width',
+    'gyro_x_mean', 'gyro_y_mean', 'gyro_z_mean',
+    'gyro_x_std', 'gyro_y_std', 'gyro_z_std',
+    'gyro_num_x_peaks', 'gyro_num_y_peaks', 'gyro_num_z_peaks',
+    'gyro_x_peak_prominence', 'gyro_y_peak_prominence', 'gyro_z_peak_prominence',
+    'gyro_x_peak_width', 'gyro_y_peak_width', 'gyro_z_peak_width',
     'target'
 ]
 

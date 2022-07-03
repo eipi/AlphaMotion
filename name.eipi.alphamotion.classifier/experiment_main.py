@@ -10,11 +10,11 @@ from data_preprocessing import process_raw_data
 import os
 
 num_iterations = 3
-training_proportions = [0.5]
-slice_sizes = [1000, 200]
+training_proportions = [0.9]
+slice_sizes = [100, 200, 400, 700, 1100]
 sample_rate_hz = 50 #todo
 
-sample_folder = os.path.join('erenaktas', 'acc')
+sample_folder = os.path.join('erenaktas')
 
 print("Pre-processing raw data")
 
@@ -29,7 +29,7 @@ for slice_size in slice_sizes:
         specific_results_folder = os.path.join(results_base_folder, experiment_label)
         os.makedirs(specific_results_folder)
         print('Running for ' + experiment_label)
-        num_frames_processed = process_raw_data(sample_folder, slice_size, specific_results_folder)
+        num_acc_frames_processed, num_gyro_frames_processed = process_raw_data(sample_folder, slice_size, specific_results_folder)
         df = pd.read_csv(specific_results_folder + '/final_data.csv')
         for i in range(num_iterations):
             print('Iteration ' + str(i + 1))
@@ -40,7 +40,8 @@ for slice_size in slice_sizes:
             print(f"Training Proportion: {training_proportion}", file=text_file)
             print(f"Sample Rate: {sample_rate_hz}", file=text_file)
             print(f"Slice Size: {slice_size}", file=text_file)
-            print(f"Total Number of Frames: {num_frames_processed}", file=text_file)
+            print(f"Total Number of Acc Frames: {num_acc_frames_processed}", file=text_file)
+            print(f"Total Number of Gyro Frames: {num_gyro_frames_processed}", file=text_file)
 
         for name in confusion_matrices.keys():
             #print(name)

@@ -56,6 +56,7 @@ def train_model(model, x_train, y_train):
 
 def generate_confusion_matrices(model, x_test, y_test):
     y_pred = model.predict(x_test)
+
     # print(classification_report(y_test, y_pred))
     cm_natural = confusion_matrix(y_test, y_pred, normalize=None)
     cm_normalized = confusion_matrix(y_test, y_pred, normalize='true')

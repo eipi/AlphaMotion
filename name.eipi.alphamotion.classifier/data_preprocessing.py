@@ -33,15 +33,14 @@ def process_raw_data(data_path, slice_size, results_folder):
     gyro_files = os.listdir(os.path.join(DATA_BASE_PATH, data_path, 'gyro'))
 
     total_number_of_frames_in_test = 0
-    print('Processing experiments ', end=" ")
+    print('Processing experiments')
     for file in acc_files:
         filename1 = file.split('acc_exp')
         filename2 = filename1[1]
         filename3 = filename2.split('_user')
         filename4 = filename3[0]
         exp_num = int(filename4)
-
-        print(filename4, end = ", ")
+        print("\r", filename4, end=" ")
 
         row_count = 0
         df = pd.read_csv(os.path.join(DATA_BASE_PATH, data_path, 'acc', file), sep=' ', header=None)
@@ -95,7 +94,7 @@ def process_raw_data(data_path, slice_size, results_folder):
                         )
                 else:
                     print('** Dropping 1 unclassified frame @ index ' + str(i))
-    print(".")
+    print("\r", 'Done.')
     dataframe['target'].value_counts().plot(kind='barh')
     dataframe.to_csv(results_folder + '/final_data.csv', index=False)
     return total_number_of_frames_in_test, total_number_of_frames_in_test

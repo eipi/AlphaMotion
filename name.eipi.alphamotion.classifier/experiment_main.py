@@ -1,24 +1,26 @@
-import time
+from datetime import datetime
 
 import numpy
 import pandas as pd
 from data_visualization import plot_and_save_confusion_matrix
 from constants import ACTIVITY_LABELS
-
+from utilities import generate_current_time_string
 from data_classification import learn_and_classify, confusion_matrices
 from data_preprocessing import process_raw_data
 import os
 
-num_iterations = 3
-training_proportions = [0.9]
-slice_sizes = [100, 200, 400, 700, 1100]
+num_iterations = 1
+training_proportions = [0.8]
+slice_sizes = [50]
 sample_rate_hz = 50 #todo
 
 sample_folder = os.path.join('erenaktas')
 
 print("Pre-processing raw data")
 
-timestamp_str = str(int(time.time() * 1000))
+now = datetime.now
+timestamp_str = generate_current_time_string()
+
 results_base_folder = os.path.join('../build/results/', timestamp_str)
 os.makedirs(results_base_folder)
 
@@ -44,15 +46,16 @@ for slice_size in slice_sizes:
             print(f"Total Number of Gyro Frames: {num_gyro_frames_processed}", file=text_file)
 
         for name in confusion_matrices.keys():
-            #print(name)
             cm_normalized = numpy.divide(confusion_matrices[name]['normalized'], num_iterations).round(2)
-            #cm_normalized = confusion_matrices[name]['normalized']
-            #print(confusion_matrices[name]['natural'])
             df_cm_natural = pd.DataFrame(confusion_matrices[name]['natural'], index=ACTIVITY_LABELS.values(),
                                  columns=ACTIVITY_LABELS.values())
             df_cm_normalized = pd.DataFrame(cm_normalized, index=ACTIVITY_LABELS.values(),
                                  columns=ACTIVITY_LABELS.values())
+            f1_score = numpy.divide(confusion_matrices[name]['fscore'], num_iterations).round(2)
             plot_label = name + ' - ' + experiment_label
             plot_and_save_confusion_matrix(df_cm_natural, 'natural', specific_results_folder, plot_label)
             plot_and_save_confusion_matrix(df_cm_normalized, 'normalized', specific_results_folder, plot_label)
+            print('f1-score = ' + str(f1_score))
+            with open(specific_results_folder + "/Setup.txt", "a", ) as text_file:
+                print(f"f1-score: {f1_score}", file=text_file)
 

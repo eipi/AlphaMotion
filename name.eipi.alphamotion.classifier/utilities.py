@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import average
 from scipy.signal import find_peaks, peak_prominences, peak_widths
+from datetime import datetime
 
 
 def mean_calculator(three_axis):
@@ -138,3 +139,8 @@ def pass_through(acc_data, gyro_data, target, df):
     )
     return df
 
+
+def generate_current_time_string():
+    now = datetime.now()  # current date and time
+    date_time = now.strftime("%m%d%Y_%H%M%S")
+    return date_time

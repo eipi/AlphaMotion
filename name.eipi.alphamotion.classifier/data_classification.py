@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier, export_text, plot_tree
-from constants import FEATURE_COLUMNS
+from constants import get_feature_columns
 from sklearn.preprocessing import StandardScaler
 
 param_grid = [
@@ -102,7 +102,7 @@ def learn_and_classify(df, training_proportion):
         # 'MLPClassifier': MLPClassifier(hidden_layer_sizes=(7,))
     }
     df = df.sample(frac=1).reset_index(drop=True)
-    x = df[FEATURE_COLUMNS[0:9]]
+    x = df[get_feature_columns()[0:len(get_feature_columns()) - 1]]
     y = df.target
     x_test, x_train, y_test, y_train = train_test_split(
         x, y, train_size=training_proportion, stratify=y
@@ -131,7 +131,7 @@ def learn_and_classify(df, training_proportion):
 
 
 # def validate_classifier_params(df):
-#     x = df[FEATURE_COLUMNS[0:9]]
+#     x = df[get_feature_columns()[0:]]
 #     y = df.target
 #     for classifier in classifiers.keys():
 #         classifier_object = classifiers[classifier]

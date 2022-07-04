@@ -1,5 +1,5 @@
 from utilities import feature_engineer, pass_through
-from constants import FEATURE_COLUMNS, DATA_BASE_PATH, RAW_COLUMNS
+from constants import get_feature_columns, DATA_BASE_PATH, RAW_COLUMNS
 from data_access import erenaktas_target_parser
 from data_manipulation import find_dominant_class_for_samples, Sample
 
@@ -9,7 +9,7 @@ import os
 use_feature_extraction = False
 
 def extractSingleFile(file_type, file_num):
-    dataframe = pd.DataFrame(columns=FEATURE_COLUMNS[0:9])
+    dataframe = pd.DataFrame(columns=get_feature_columns()[0:len(get_feature_columns()) - 1])
     file = os.path.join(DATA_BASE_PATH, file_type, file_type + '-' + str(file_num) + '.csv')
     try:
         df = pd.read_csv(file)
@@ -24,7 +24,7 @@ def extractSingleFile(file_type, file_num):
 
 def process_raw_data(data_path, slice_size, results_folder):
     if use_feature_extraction:
-        dataframe = pd.DataFrame(columns=FEATURE_COLUMNS)
+        dataframe = pd.DataFrame(columns=get_feature_columns())
     else:
         dataframe = pd.DataFrame(columns=RAW_COLUMNS)
 

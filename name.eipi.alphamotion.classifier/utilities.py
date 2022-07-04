@@ -64,11 +64,11 @@ def feature_engineer(acc_data, gyro_data, target, df):
     try:
         x_mean, y_mean, z_mean = mean_calculator(acc_data)
         x_std, y_std, z_std = std_calculator(acc_data)
-        num_x_peaks, num_y_peaks, num_z_peaks, x_peak_prominence, y_peak_prominence, z_peak_prominence,\
+        x_num_peaks, y_num_peaks, z_num_peaks, x_peak_prominence, y_peak_prominence, z_peak_prominence,\
             x_peak_width, y_peak_width, z_peak_width = peaks_calculator(acc_data)
         gyro_x_mean, gyro_y_mean, gyro_z_mean = mean_calculator(gyro_data)
         gyro_x_std, gyro_y_std, gyro_z_std = std_calculator(gyro_data)
-        gyro_num_x_peaks, gyro_num_y_peaks, gyro_num_z_peaks, gyro_x_peak_prominence, gyro_y_peak_prominence, gyro_z_peak_prominence,\
+        gyro_x_num_peaks, gyro_y_num_peaks, gyro_z_num_peaks, gyro_x_peak_prominence, gyro_y_peak_prominence, gyro_z_peak_prominence,\
             gyro_x_peak_width, gyro_y_peak_width, gyro_z_peak_width = peaks_calculator(gyro_data)
     except:
         print(acc_data.shape, target)
@@ -81,9 +81,9 @@ def feature_engineer(acc_data, gyro_data, target, df):
         'acc_x_std': x_std,
         'acc_y_std': y_std,
         'acc_z_std': z_std,
-        'acc_num_x_peaks': num_x_peaks,
-        'acc_num_y_peaks': num_y_peaks,
-        'acc_num_z_peaks': num_z_peaks,
+        'acc_x_num_peaks': x_num_peaks,
+        'acc_y_num_peaks': y_num_peaks,
+        'acc_z_num_peaks': z_num_peaks,
         'acc_x_peak_prominence': x_peak_prominence,
         'acc_y_peak_prominence': y_peak_prominence,
         'acc_z_peak_prominence': z_peak_prominence,
@@ -96,9 +96,9 @@ def feature_engineer(acc_data, gyro_data, target, df):
         'gyro_x_std': gyro_x_std,
         'gyro_y_std': gyro_y_std,
         'gyro_z_std': gyro_z_std,
-        'gyro_num_x_peaks': gyro_num_x_peaks,
-        'gyro_num_y_peaks': gyro_num_y_peaks,
-        'gyro_num_z_peaks': gyro_num_z_peaks,
+        'gyro_x_num_peaks': gyro_x_num_peaks,
+        'gyro_y_num_peaks': gyro_y_num_peaks,
+        'gyro_z_num_peaks': gyro_z_num_peaks,
         'gyro_x_peak_prominence': gyro_x_peak_prominence,
         'gyro_y_peak_prominence': gyro_y_peak_prominence,
         'gyro_z_peak_prominence': gyro_z_peak_prominence,

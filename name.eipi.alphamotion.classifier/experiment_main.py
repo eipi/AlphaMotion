@@ -9,7 +9,7 @@ num_iterations = 15
 training_proportions = [0.8]
 slice_sizes = [25]
 #sample_rates = [25,10]
-sample_rates = list(range(1, 30))
+sample_rates = list(range(8, 30))
 
 now = datetime.now
 timestamp_str = generate_current_time_string()

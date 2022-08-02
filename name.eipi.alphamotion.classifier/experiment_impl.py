@@ -21,8 +21,6 @@ def run_experiment(results_base_folder, sample_folder, slice_size, training_prop
         confusion_matrices = {}
         for i in range(num_iterations):
             print('Iteration ' + str(i + 1))
-            if i == 2:
-                print('in second loop')
             learn_and_classify(confusion_matrices, df, training_proportion)
 
         with open(specific_results_folder + "/Setup.txt", "w") as text_file:
@@ -32,7 +30,7 @@ def run_experiment(results_base_folder, sample_folder, slice_size, training_prop
             print(f"Slice Size: {slice_size}", file=text_file)
             print(f"Total Number of Acc Frames: {num_acc_frames_processed}", file=text_file)
             print(f"Total Number of Gyro Frames: {num_gyro_frames_processed}", file=text_file)
-
+        text_file.close()
         for name in confusion_matrices.keys():
             cm_normalized = numpy.divide(confusion_matrices[name]['normalized'], num_iterations).round(2)
             df_cm_natural = pd.DataFrame(confusion_matrices[name]['natural'], index=ACTIVITY_LABELS.values(),

@@ -1,4 +1,4 @@
-from utilities import feature_engineer, pass_through
+from utilities import feature_engineer, resample_list
 from constants import get_feature_columns, DATA_BASE_PATH, RAW_COLUMNS
 from data_access import erenaktas_target_parser
 from data_manipulation import find_dominant_class_for_samples, Sample
@@ -6,7 +6,7 @@ from data_manipulation import find_dominant_class_for_samples, Sample
 import pandas as pd
 import os
 
-use_feature_extraction = False
+use_feature_extraction = True
 
 def extractSingleFile(file_type, file_num):
     dataframe = pd.DataFrame(columns=get_feature_columns()[0:len(get_feature_columns()) - 1])
@@ -22,7 +22,7 @@ def extractSingleFile(file_type, file_num):
         print('some error')
     return dataframe.drop('target', 1)
 
-def process_raw_data(data_path, slice_size, results_folder):
+def process_raw_data(data_path, results_folder, slice_size, sample_rate):
     if use_feature_extraction:
         dataframe = pd.DataFrame(columns=get_feature_columns())
     else:
@@ -72,8 +72,10 @@ def process_raw_data(data_path, slice_size, results_folder):
         classification_map = find_dominant_class_for_samples(target_activity_group, sample_windows)
         for i in range(len(sample_windows)):
             sample_window = sample_windows[i]
-            acc_sample_vector = acc_sample_vectors[i]
-            gyro_sample_vector = gyro_sample_vectors[i]
+            acc_sample_vector = resample_list(acc_sample_vectors[i], sample_rate)
+            gyro_sample_vector = resample_list(gyro_sample_vectors[i], sample_rate)
+            #acc_sample_vector = acc_sample_vectors[i]
+            #gyro_sample_vector = gyro_sample_vectors[i]
             sample_object = Sample(sample_window[0], sample_window[1])
             if sample_object in classification_map.keys():
                 activity = classification_map.get(sample_object)

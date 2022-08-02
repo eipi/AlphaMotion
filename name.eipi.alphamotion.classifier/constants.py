@@ -12,6 +12,7 @@ FEATURE_PEAK_WIDTH = 'peak_width'
 FEATURES = [FEATURE_MEAN, FEATURE_STD, FEATURE_NUM_PEAKS, FEATURE_PEAK_PROMINENCE, FEATURE_PEAK_WIDTH]
 TARGET = 'target'
 
+default_sample_rate_hz = 50
 
 def get_feature_columns():
     feature_columns = []

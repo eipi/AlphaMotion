@@ -36,10 +36,7 @@ classifier_params = {
 }
 
 
-confusion_matrices = {}
-
-
-def insert_or_add(name, cm_natural, cm_normalized, f_score):
+def insert_or_add(confusion_matrices, name, cm_natural, cm_normalized, f_score):
     confusion_matrices_name = {}
     if name in confusion_matrices.keys():
         confusion_matrices_name['natural'] = confusion_matrices[name]['natural'] + cm_natural
@@ -92,14 +89,14 @@ def visualize_confusion_matrix(cm, labels, name, x_test, y_test):
     plt.show()
 
 
-def learn_and_classify(df, training_proportion):
+def learn_and_classify(confusion_matrices, df, training_proportion):
     classifiers = {
         'RandomForestClassifier': RandomForestClassifier(),
         'DecisionTreeClassifier': DecisionTreeClassifier(),
         'GradientBoostingClassifier': GradientBoostingClassifier(),
-        # 'LogisticRegression': LogisticRegression(),
-        # 'SVC': SVC(),
-        # 'MLPClassifier': MLPClassifier(hidden_layer_sizes=(7,))
+        'LogisticRegression': LogisticRegression(max_iter=500),
+        'SVC': SVC(kernel='poly'),
+        'MLPClassifier': MLPClassifier(max_iter=500)
     }
     df = df.sample(frac=1).reset_index(drop=True)
     x = df[get_feature_columns()[0:len(get_feature_columns()) - 1]]
@@ -114,8 +111,6 @@ def learn_and_classify(df, training_proportion):
     # x_train = scaler.transform(x_train)
     # x_test = scaler.transform(x_test)
 
-    confusion_matrices.clear()
-
     for classifier in classifiers.keys():
         print(classifier, end =" ")
         print("Training...", end = " ")
@@ -125,7 +120,7 @@ def learn_and_classify(df, training_proportion):
         print("Done.")
 
         # accuracy matrix
-        insert_or_add(classifier, cm_natural, cm_normalized, f_score)
+        insert_or_add(confusion_matrices, classifier, cm_natural, cm_normalized, f_score)
         # visualize_classifier_confusion_matrix(classifiers[classifier], labels, classifier, x_test, y_test)
     # plotTsne(x_train, y_train, 5)
 

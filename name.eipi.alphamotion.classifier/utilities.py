@@ -1,5 +1,7 @@
+from math import floor, ceil
+
 import numpy as np
-from numpy import average
+from constants import default_sample_rate_hz
 from scipy.signal import find_peaks, peak_prominences, peak_widths
 from datetime import datetime
 
@@ -43,13 +45,27 @@ def peaks_calculator(three_axis):
     num_y_peaks = len(y_peaks)
     num_z_peaks = len(z_peaks)
 
-    x_peak_prominences = np.mean(peak_prominences(vector_x, x_peaks))
-    y_peak_prominences = np.mean(peak_prominences(vector_y, y_peaks))
-    z_peak_prominences = np.mean(peak_prominences(vector_z, z_peaks))
 
-    x_peak_widths = np.mean(peak_widths(vector_x, x_peaks))
-    y_peak_widths = np.mean(peak_widths(vector_y, y_peaks))
-    z_peak_widths = np.mean(peak_widths(vector_z, z_peaks))
+    if num_x_peaks != 0:
+        x_peak_prominences = np.mean(peak_prominences(vector_x, x_peaks))
+        x_peak_widths = np.mean(peak_widths(vector_x, x_peaks))
+    else:
+        x_peak_prominences = 0
+        x_peak_widths = 0
+
+    if num_y_peaks != 0:
+        y_peak_prominences = np.mean(peak_prominences(vector_y, y_peaks))
+        y_peak_widths = np.mean(peak_widths(vector_y, y_peaks))
+    else:
+        y_peak_prominences = 0
+        y_peak_widths = 0
+
+    if num_z_peaks != 0:
+        z_peak_prominences = np.mean(peak_prominences(vector_z, z_peaks))
+        z_peak_widths = np.mean(peak_widths(vector_z, z_peaks))
+    else:
+        z_peak_prominences = 0
+        z_peak_widths = 0
 
     return num_x_peaks, num_y_peaks, num_z_peaks, \
            x_peak_prominences, y_peak_prominences, z_peak_prominences, \
@@ -144,3 +160,31 @@ def generate_current_time_string():
     now = datetime.now()  # current date and time
     date_time = now.strftime("%m%d%Y_%H%M%S")
     return date_time
+
+original_sample_rate_hz = 50
+
+
+def resample_list(list, samplerate):
+    if samplerate > default_sample_rate_hz:
+        print('Upsampling not supported')
+        return
+    resampled_array = []
+    num_samples = len(list)
+    time = num_samples / default_sample_rate_hz
+
+    num_resamples = time * samplerate
+    period = num_samples / num_resamples
+
+    i = 1
+    while i <= len(list) - 1:
+        time_floor = floor(i)
+        time_ceil = ceil(i)
+        upper_weight = i - time_floor
+        lower_weight = 1 - upper_weight
+        if time_ceil < len(list):
+            resampled_array.append(list[time_floor] * lower_weight + list[time_ceil] * upper_weight)
+        else:
+            resampled_array.append(list[time_floor])
+        i = i + period
+    return resampled_array
+

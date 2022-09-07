@@ -6,7 +6,20 @@ from scipy.signal import find_peaks, peak_prominences, peak_widths
 from datetime import datetime
 
 
-def mean_calculator(three_axis):
+def magnacalca(three_axis):
+    three_axis = np.array(three_axis)
+    vector_x = three_axis[:, 0]
+    vector_y = three_axis[:, 1]
+    vector_z = three_axis[:, 2]
+    magnitudes = []
+    for i in range(0, len(vector_x)):
+        magnitudes.append(np.sqrt(np.square(vector_x[i])
+                                  + np.square(vector_y[i])
+                                  + np.square(vector_z[i])))
+    return magnitudes
+
+
+def mean_calculator_3d(three_axis):
     """ Return mean of each vectors """
     three_axis = np.array(three_axis)
     vector_x = three_axis[:, 0]
@@ -18,7 +31,14 @@ def mean_calculator(three_axis):
     return x_mean, y_mean, z_mean
 
 
-def std_calculator(three_axis):
+def mean_calculator_1d(one_axis):
+    """ Return mean of each vectors """
+    vector_x = np.array(one_axis)
+    x_mean = np.mean(vector_x)
+    return x_mean
+
+
+def std_calculator_3d(three_axis):
     """ Return standart deviation of each vectors """
     three_axis = np.array(three_axis)
     vector_x = three_axis[:, 0]
@@ -28,6 +48,13 @@ def std_calculator(three_axis):
     y_std = np.std(vector_y)
     z_std = np.std(vector_z)
     return x_std, y_std, z_std
+
+
+def std_calculator_1d(one_axis):
+    """ Return standart deviation of each vectors """
+    vector_x = np.array(one_axis)
+    x_std = np.std(vector_x)
+    return x_std
 
 
 def peaks_calculator(three_axis):
@@ -78,12 +105,15 @@ def peaks_calculator(three_axis):
 # peak_widths      -- Calculate the width of each peak in a signal.
 def feature_engineer(acc_data, gyro_data, target, df):
     try:
-        x_mean, y_mean, z_mean = mean_calculator(acc_data)
-        x_std, y_std, z_std = std_calculator(acc_data)
+        acceleration_magnitude = magnacalca(acc_data)
+        acc_magnitude_mean = mean_calculator_1d(acceleration_magnitude)
+        acc_magnitude_std = std_calculator_1d(acceleration_magnitude)
+        x_mean, y_mean, z_mean = mean_calculator_3d(acc_data)
+        x_std, y_std, z_std = std_calculator_3d(acc_data)
         x_num_peaks, y_num_peaks, z_num_peaks, x_peak_prominence, y_peak_prominence, z_peak_prominence,\
             x_peak_width, y_peak_width, z_peak_width = peaks_calculator(acc_data)
-        gyro_x_mean, gyro_y_mean, gyro_z_mean = mean_calculator(gyro_data)
-        gyro_x_std, gyro_y_std, gyro_z_std = std_calculator(gyro_data)
+        gyro_x_mean, gyro_y_mean, gyro_z_mean = mean_calculator_3d(gyro_data)
+        gyro_x_std, gyro_y_std, gyro_z_std = std_calculator_3d(gyro_data)
         gyro_x_num_peaks, gyro_y_num_peaks, gyro_z_num_peaks, gyro_x_peak_prominence, gyro_y_peak_prominence, gyro_z_peak_prominence,\
             gyro_x_peak_width, gyro_y_peak_width, gyro_z_peak_width = peaks_calculator(gyro_data)
     except:
@@ -91,6 +121,8 @@ def feature_engineer(acc_data, gyro_data, target, df):
         print(gyro_data.shape, target)
 
     dictionary = {
+        'acc_magnitude_mean': acc_magnitude_mean,
+        'acc_magnitude_std': acc_magnitude_std,
         'acc_x_mean': x_mean,
         'acc_y_mean': y_mean,
         'acc_z_mean': z_mean,
@@ -158,7 +190,7 @@ def pass_through(acc_data, gyro_data, target, df):
 
 def generate_current_time_string():
     now = datetime.now()  # current date and time
-    date_time = now.strftime("%m%d%Y_%H%M%S")
+    date_time = now.strftime("%m%d%Y_%H%M")
     return date_time
 
 original_sample_rate_hz = 50

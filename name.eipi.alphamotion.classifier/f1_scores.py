@@ -7,7 +7,7 @@ import csv
 #test_dir = os.path.join('../build/results/','07252022_232335')
 #test_dir = os.path.join('../build/results/','07262022_000213')
 #test_dir = os.path.join('../build/results/','07302022_235740_1')
-test_dir = os.path.join('../build/results/', '08012022_161252')
+test_dir = os.path.join('../build/results/', '08172022_0031', 'all_features')
 files = os.listdir(test_dir)
 f1_results = []
 f1_results.append(['sample_rate',
@@ -16,11 +16,14 @@ f1_results.append(['sample_rate',
                    'GradientBoostingClassifier',
                    'LogisticRegression',
                    'SVC',
-                   'MLPClassifier'])
+                   'MLPClassifier',
+                   'VotingClassifierHard',
+                   'VotingClassifierSoft'])
 for experiment in files:
-    if (experiment.startswith('slice_size')):
+    if (experiment.startswith('slice_size') and not experiment.endswith('11')):
         sr = experiment.split('sample_rate=')[1]
         # Using readlines()
+
         details_file = open(os.path.join(test_dir, experiment, 'Setup.txt'), 'r')
         details_file_lines = details_file.readlines()
 
@@ -37,9 +40,13 @@ for experiment in files:
                 svc = line.split('SVC f1-score: ')[1].rstrip('\n')
             if 'MLPClassifier f1-score: ' in line:
                 mlpc = line.split('MLPClassifier f1-score: ')[1].rstrip('\n')
-        f1_results.append([sr, rfc, dtc, gbc, lr, svc, mlpc])
+            if 'VotingClassifierHard f1-score: ' in line:
+                vpch = line.split('VotingClassifierHard f1-score: ')[1].rstrip('\n')
+            if 'VotingClassifierSoft f1-score: ' in line:
+                vpcs = line.split('VotingClassifierSoft f1-score: ')[1].rstrip('\n')
+        f1_results.append([sr, rfc, dtc, gbc, lr, svc, mlpc, vpch, vpcs])
 
     print(f1_results)
-    file1 = open(os.path.join(test_dir, 'f1_analysis.csv'), 'w', newline ='')
+    file1 = open(os.path.join(test_dir, 'f1_analysis_6.csv'), 'w', newline ='')
     write = csv.writer(file1)
     write.writerows(f1_results)

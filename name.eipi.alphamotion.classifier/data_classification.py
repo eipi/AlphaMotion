@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score
-
+from sklearn.ensemble import VotingClassifier
 from data_visualization import plotTsne
 from sklearn.model_selection import train_test_split, GridSearchCV
 import matplotlib.pyplot as plt
@@ -96,8 +96,22 @@ def learn_and_classify(confusion_matrices, df, training_proportion):
         'GradientBoostingClassifier': GradientBoostingClassifier(),
         'LogisticRegression': LogisticRegression(max_iter=500),
         'SVC': SVC(kernel='poly'),
-        'MLPClassifier': MLPClassifier(max_iter=500)
+        'MLPClassifier': MLPClassifier(max_iter=300)
     }
+    votingClassifierSoft = VotingClassifier(estimators = [
+            ('RandomForestClassifier', RandomForestClassifier()),
+            ('GradientBoostingClassifier', GradientBoostingClassifier()),
+            ('MLPClassifier', MLPClassifier(max_iter=300))
+        ], voting="soft"
+    )
+    votingClassifierHard = VotingClassifier(estimators = [
+            ('RandomForestClassifier', RandomForestClassifier()),
+            ('GradientBoostingClassifier', GradientBoostingClassifier()),
+            ('MLPClassifier', MLPClassifier(max_iter=300))
+        ], voting="hard"
+    )
+    classifiers['VotingClassifierHard'] = votingClassifierHard
+    classifiers['VotingClassifierSoft'] = votingClassifierSoft
     df = df.sample(frac=1).reset_index(drop=True)
     x = df[get_feature_columns()[0:len(get_feature_columns()) - 1]]
     y = df.target
@@ -115,7 +129,6 @@ def learn_and_classify(confusion_matrices, df, training_proportion):
         print(classifier, end =" ")
         print("Training...", end = " ")
         classifiers[classifier].fit(x_train, y_train)
-        print("Evaluating... " , end = " ")
         cm_natural, cm_normalized, f_score = generate_confusion_matrices(classifiers[classifier], x_test, y_test)
         print("Done.")
 

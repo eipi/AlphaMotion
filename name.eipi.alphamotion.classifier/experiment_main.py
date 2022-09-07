@@ -1,20 +1,27 @@
 import time
-from datetime import datetime
+
 from multiprocessing import Process
 from utilities import generate_current_time_string
 from experiment_impl import run_experiment
 import os
 
-num_iterations = 15
-training_proportions = [0.8]
-slice_sizes = [25]
-#sample_rates = [25,10]
-sample_rates = list(range(8, 30))
+num_iterations = 30
+training_proportions = [0.6]
+slice_sizes = [50]
+sample_rates = [25,26,27,28]
+experiment_name = 'all_features'
 
-now = datetime.now
-timestamp_str = generate_current_time_string()
-results_base_folder = os.path.join('../build/results/', timestamp_str)
-os.makedirs(results_base_folder)
+
+def create_base_results_folder():
+    global results_base_folder
+    timestamp_str = generate_current_time_string()
+    results_base_folder = os.path.join('../build/results/', timestamp_str, experiment_name)
+    os.makedirs(results_base_folder, exist_ok=True)
+    return results_base_folder
+
+
+results_base_folder = create_base_results_folder()
+
 
 start = time.perf_counter()
 threads = []
